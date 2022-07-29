@@ -1,0 +1,23 @@
+.container {
+  position: relative;
+  display: flex;
+  height: 20rem;
+}
+
+.keyWhite {
+  border: 0.1rem solid black;
+  border-radius: 0 0 1rem 1rem;
+  background-color: white;
+  width: 3.8rem;
+  height: 100%;
+}
+
+.keyBlack {
+  /* left property is dynamically inserted */
+  position: absolute;
+  height: 60%;
+  width: 2.5rem;
+  background-color: black;
+  border: 0.1rem solid black;
+  border-radius: 0 0 0.5rem 0.5rem;
+}
