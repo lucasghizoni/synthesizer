@@ -19,7 +19,8 @@ function App() {
               onMouseOver={freq => {
                 play(freq);
               }}
-            /> :
+            />
+             :
             <button onClick={() => { setShowKeyboard(true); init(); }}>start</button>
         }
       </header>

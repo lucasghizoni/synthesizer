@@ -8,12 +8,13 @@ export type Note = MajorNote | SharpNote;
 
 const C_MAJOR_SCALE: readonly Note[] = ['C', 'C#', 'D', 'E', 'D#', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
-const BLACK_KEYS_LEFT_VAL: { [k in SharpNote]: number } = {
-  'C#': 2 * 1.34,
-  'D#': 5 * 1.34,
-  'F#': 11 * 1.33,
-  'G#': 14 * 1.33,
-  'A#': 17 * 1.33,
+const CSS_LEFT_GAP = 1.33;
+const BLACK_KEYS_LEFT_MULTIPLIER_VAL: { [k in SharpNote]: number } = {
+  'C#': 2,
+  'D#': 5,
+  'F#': 11,
+  'G#': 14,
+  'A#': 17,
 } as const;
 
 interface Props {
@@ -42,8 +43,8 @@ export const CMajorScale: FC<Props> = ({isOnlyFirstKeyShown, onMouseOver, onMous
             onMouseLeave(note);
           }}
           style={{
-            backgroundColor: pressedKey === note ? 'antiquewhite' : '',
-            left: note.endsWith('#') ? `${BLACK_KEYS_LEFT_VAL[note as SharpNote]}rem` : '',
+            backgroundColor: pressedKey === note ? '#4eccff' : '',
+            left: note.endsWith('#') ? `${BLACK_KEYS_LEFT_MULTIPLIER_VAL[note as SharpNote] * CSS_LEFT_GAP}rem` : '',
           }}
         />
       )}

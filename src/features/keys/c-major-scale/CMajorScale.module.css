@@ -6,6 +6,7 @@
 
 .keyWhite {
   border: 0.1rem solid black;
+  border-top: 0.2rem solid black;
   border-radius: 0 0 1rem 1rem;
   background-color: white;
   width: 3.8rem;
