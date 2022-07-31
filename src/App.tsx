@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import './App.css';
 import { Keys } from "./features/keys/Keys";
 import {useAudioContext} from "./app/useAudioContext";
+import { Knob } from "./features/knob/Knob";
+import { Panel } from "./components/panel/Panel";
 
 function App() {
   const [showKeyboard, setShowKeyboard] = useState(false);
@@ -12,14 +14,22 @@ function App() {
       <header className="App-header">
         {
           showKeyboard ?
-            <Keys
-              onMouseLeave={() => {
-                stop();
-              }}
-              onMouseOver={freq => {
-                play(freq);
-              }}
-            />
+            <div className="App-synth">
+              <Panel className="App-knobsPanel">
+                <Knob label="Volume"/>
+                <Knob label="Filter"/>
+              </Panel>
+              <Panel>
+                <Keys
+                  onMouseLeave={() => {
+                    stop();
+                  }}
+                  onMouseOver={freq => {
+                    play(freq);
+                  }}
+                />
+              </Panel>
+            </div>
              :
             <button onClick={() => { setShowKeyboard(true); init(); }}>start</button>
         }

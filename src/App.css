@@ -22,18 +22,13 @@
   font-size: calc(10px + 2vmin);
 }
 
-.App-link {
-  color: rgb(112, 76, 182);
+.App-synth {
+  background-color: black;
+  border-radius: 0.5rem;
+  padding: 0.7rem;
 }
 
-@keyframes App-logo-float {
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(10px);
-  }
-  100% {
-    transform: translateY(0px);
-  }
+.App-knobsPanel {
+  display: flex;
+  margin-bottom: 0.7rem;
 }

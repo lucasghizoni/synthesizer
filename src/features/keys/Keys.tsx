@@ -3,6 +3,7 @@ import React, {FC} from 'react';
 import { CMajorScale, Note } from "./c-major-scale/CMajorScale";
 import styles from './Keys.module.css';
 
+
 type Octave = 1 | 2 | 3 | 4;
 
 type HertzOctavesMap = {
