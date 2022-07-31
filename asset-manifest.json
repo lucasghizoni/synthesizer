@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/synthesizer/static/css/main.79b8526f.css",
-    "main.js": "/synthesizer/static/js/main.ed9e6ddc.js",
-    "static/js/787.9f444b8b.chunk.js": "/synthesizer/static/js/787.9f444b8b.chunk.js",
+    "main.css": "/synthesizer/static/css/main.88441b71.css",
+    "main.js": "/synthesizer/static/js/main.c3dfd7a2.js",
+    "static/js/787.d7bd18e4.chunk.js": "/synthesizer/static/js/787.d7bd18e4.chunk.js",
     "static/media/backnoise.png": "/synthesizer/static/media/backnoise.4d8ea64cfe43579f58cd.png",
     "index.html": "/synthesizer/index.html",
-    "main.79b8526f.css.map": "/synthesizer/static/css/main.79b8526f.css.map",
-    "main.ed9e6ddc.js.map": "/synthesizer/static/js/main.ed9e6ddc.js.map",
-    "787.9f444b8b.chunk.js.map": "/synthesizer/static/js/787.9f444b8b.chunk.js.map"
+    "main.88441b71.css.map": "/synthesizer/static/css/main.88441b71.css.map",
+    "main.c3dfd7a2.js.map": "/synthesizer/static/js/main.c3dfd7a2.js.map",
+    "787.d7bd18e4.chunk.js.map": "/synthesizer/static/js/787.d7bd18e4.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.79b8526f.css",
-    "static/js/main.ed9e6ddc.js"
+    "static/css/main.88441b71.css",
+    "static/js/main.c3dfd7a2.js"
   ]
 }
