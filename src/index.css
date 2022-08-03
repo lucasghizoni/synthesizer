@@ -1,8 +1,14 @@
+@font-face {
+  font-family: "arcade";
+  src: url("./assets/arcade.regular.ttf");
+}
+
 html {
   font-size: 62.5%;
 }
 
 body {
+  background-color: #8ab5c7;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',

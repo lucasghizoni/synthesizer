@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 
 import { CMajorScale, Note } from "./c-major-scale/CMajorScale";
 import styles from './Keys.module.css';
@@ -31,16 +31,22 @@ interface Props {
 }
 
 export const Keys: FC<Props> = ({onMouseOver, onMouseLeave}) => {
+  const [isMouseDown, setIsMouseDown] = useState(false);
+
   const handleMouseOver = (scale: Octave) => (note: Note) => {
     onMouseOver(frequencyOctavesMap[note][scale]);
   };
 
   return (
-    <div className={styles.container}>
-      <CMajorScale onMouseLeave={onMouseLeave} onMouseOver={handleMouseOver(1)}/>
-      <CMajorScale onMouseLeave={onMouseLeave} onMouseOver={handleMouseOver(2)}/>
-      <CMajorScale onMouseLeave={onMouseLeave} onMouseOver={handleMouseOver(3)}/>
-      <CMajorScale onMouseLeave={onMouseLeave} onMouseOver={handleMouseOver(4)} isOnlyFirstKeyShown={true}/>
+    <div
+      className={styles.container}
+      onMouseUp={() => setIsMouseDown(false)}
+      onMouseDown={() => setIsMouseDown(true)}
+    >
+      <CMajorScale isMouseDown={isMouseDown} onMouseLeave={onMouseLeave} onMouseOver={handleMouseOver(1)}/>
+      <CMajorScale isMouseDown={isMouseDown} onMouseLeave={onMouseLeave} onMouseOver={handleMouseOver(2)}/>
+      <CMajorScale isMouseDown={isMouseDown} onMouseLeave={onMouseLeave} onMouseOver={handleMouseOver(3)}/>
+      <CMajorScale isMouseDown={isMouseDown} onMouseLeave={onMouseLeave} onMouseOver={handleMouseOver(4)} isOnlyFirstKeyShown={true}/>
     </div>
   )
 }
