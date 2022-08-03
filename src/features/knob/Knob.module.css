@@ -11,9 +11,10 @@
 .label {
   margin-top: 1.3rem;
   color: #b7b5b5;
-  font-size: 1.5rem;
+  font-size: 1.1rem;
   font-weight: bold;
   user-select: none;
+  text-transform: uppercase;
 }
 
 .knob:active {

@@ -12,7 +12,7 @@ export const useAudioContext = () => {
         const osc = (audioCtx as AudioContext).createOscillator();
         const gainNode = (audioCtx as AudioContext).createGain();
         osc.frequency.value = frequency;
-        osc.type = 'square';
+        osc.type = 'sawtooth';
         osc.onended = () => {
           setFrequency(null);
         }

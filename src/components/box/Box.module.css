@@ -1,0 +1,22 @@
+.container {
+  margin-left: auto;
+  border: 0.2rem solid #618099;
+  padding: 0.3rem 1.5rem 1rem 1.5rem;
+  border-radius: 0.8rem;
+  position: relative;
+  background-color: #3d3b3b;
+  text-align: center;
+  height: fit-content;
+}
+
+.content {
+  display: flex;
+}
+
+.label {
+  color: #a5a0a0;
+  font-size: 2rem;
+  font-weight: bold;
+  letter-spacing: 0.3rem;
+  font-family: 'arcade';
+}
