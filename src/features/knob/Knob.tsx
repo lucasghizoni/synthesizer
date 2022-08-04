@@ -16,15 +16,14 @@ const DEGREE_VALUES = {
 const SPEED_FACTOR = 8;
 
 const calculateValue = (degree: number) =>
-  Math.round((degree - DEGREE_VALUES.START) * 100 / (DEGREE_VALUES.END - DEGREE_VALUES.START));
+  Math.round((degree - DEGREE_VALUES.START) * 100 / (DEGREE_VALUES.END - DEGREE_VALUES.START)) / 100;
 
 const calculateDegree = (value: number) =>
-  Math.round((((DEGREE_VALUES.END - DEGREE_VALUES.START) * value) / 100) + DEGREE_VALUES.START);
+  Math.round((((DEGREE_VALUES.END - DEGREE_VALUES.START) * (value * 100)) / 100) + DEGREE_VALUES.START);
 
 export const Knob: FC<Props> = ({ label, onChange = () => {} , initialValue = 80}) => {
   const [rotateDegree, setRotateDegree] = useState<number>(calculateDegree(initialValue));
   const [dragData, setDragData] = useState<{ isDirectionUp?: boolean, y?: number }>({});
-
 
   const handleMouseMove = (e: MouseEventInit) => {
     setDragData(old => {

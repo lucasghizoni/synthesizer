@@ -2,44 +2,75 @@ import {useEffect, useState} from "react";
 
 export const useAudioContext = () => {
   const [oscillator, setOscillator] = useState<OscillatorNode | null>(null);
+  const [gainNode, setGainNode] = useState<GainNode | null>(null);
   const [frequency, setFrequency] = useState<number | null>(null);
   const [audioCtx, setAudioCtx] = useState<AudioContext | null>(null);
-  const [gain, setGain] = useState(0.8);
+  const [volume, setVolume] = useState(0.3);
+  const [attack, setAttack] = useState(0.5);
+  const [sustain, setSustain] = useState(0.5);
+  const [decay, setDecay] = useState(0.5);
+  const [release, setRelease] = useState(0.5);
 
   useEffect(() => {
-    if(frequency && audioCtx) {
-      setOscillator(() => {
-        const osc = (audioCtx as AudioContext).createOscillator();
-        const gainNode = (audioCtx as AudioContext).createGain();
-        osc.frequency.value = frequency;
-        osc.type = 'sawtooth';
-        osc.onended = () => {
+    if(frequency && audioCtx && gainNode) {
+        const now = audioCtx.currentTime;
+        oscillator?.stop();
+        gainNode.gain.cancelScheduledValues(now);
+
+        const oscillatorNode = audioCtx.createOscillator();
+        oscillatorNode.frequency.value = frequency;
+        oscillatorNode.type = 'sawtooth';
+        oscillatorNode.onended = () => {
           setFrequency(null);
         }
 
-        gainNode.gain.value = gain;
+        const attackDuration = attack * 2;
+        const attackEnd = (now + attackDuration);
+        const decayDuration = decay * 2;
 
-        osc.connect(gainNode);
+        oscillatorNode.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
 
-        gainNode.connect((audioCtx as AudioContext).destination)
-        osc.start();
-        return osc;
-      });
+        gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+        gainNode.gain.linearRampToValueAtTime(volume, attackEnd);
+        gainNode.gain.setTargetAtTime(sustain, attackEnd, decayDuration);
+
+        oscillatorNode.start();
+        setOscillator(oscillatorNode);
     }
-  }, [frequency, audioCtx]);
+  }, [frequency, audioCtx, gainNode, volume]);
 
   return {
-    play: (frequency: number) => {
+    play: (freq: number) => {
       if(!audioCtx) {
-        setAudioCtx(new AudioContext());
+        const newAudioCtx = new AudioContext();
+        setAudioCtx(newAudioCtx);
+        setGainNode(newAudioCtx.createGain());
       }
-      setFrequency(frequency);
-    },
-    gain: (value: number) => {
-      setGain(value);
+      setFrequency(freq);
     },
     stop: () => {
-      oscillator?.stop(0.2);
-    }
+      if(audioCtx && gainNode) {
+        const now = audioCtx.currentTime;
+        oscillator?.stop();
+        gainNode.gain.cancelScheduledValues(0);
+        const releaseDuration = release * 2;
+        const releaseEnd = now + releaseDuration;
+
+        gainNode.gain.setValueAtTime(gainNode.gain.value, now);
+        gainNode.gain.linearRampToValueAtTime(0, releaseEnd);
+        oscillator?.stop(releaseEnd);
+      }
+    },
+    setAttack,
+    setVolume,
+    setSustain,
+    setDecay,
+    setRelease,
+    decay,
+    sustain,
+    volume,
+    attack,
+    release,
   }
 }

@@ -8,7 +8,14 @@ import { Panel } from "./components/panel/Panel";
 import {Box} from "./components/box/Box";
 
 function App() {
-  const { play, stop, gain } = useAudioContext();
+  const {
+    attack, setAttack,
+    decay, setDecay,
+    sustain, setSustain,
+    volume, setVolume,
+    release, setRelease,
+    play, stop,
+  } = useAudioContext();
 
   return (
     <section className={styles.main}>
@@ -17,17 +24,13 @@ function App() {
         <div className={styles.synth}>
           <Panel className={styles.controllersPanel}>
             <Box label="Master">
-              <Knob initialValue={20} onChange={value => gain(value/100)} label="Vol"/>
+              <Knob initialValue={volume} onChange={setVolume} label="Vol"/>
             </Box>
             <Box label="ENVELOPE">
-              <Knob label="Sus"/>
-              <Knob label="Rel"/>
-              <Knob label="Dec"/>
-              <Knob label="Atk"/>
-            </Box>
-            <Box label="Filter">
-              <Knob label="Sustain"/>
-              <Knob label="Release"/>
+              <Knob initialValue={attack} onChange={setAttack} label="Atk"/>
+              <Knob initialValue={decay} onChange={setDecay} label="Dec"/>
+              <Knob initialValue={sustain} onChange={setSustain} label="Sus"/>
+              <Knob initialValue={release} onChange={setRelease} label="Rel"/>
             </Box>
           </Panel>
           <Panel>

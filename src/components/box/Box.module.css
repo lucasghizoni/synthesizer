@@ -1,7 +1,10 @@
 .container {
-  margin-left: auto;
+  display: flex;
+  align-items: center;
+  flex-flow: column;
+  margin-left: 2rem;
   border: 0.2rem solid #618099;
-  padding: 0.3rem 1.5rem 1rem 1.5rem;
+  padding: 0.5rem 1.5rem;
   border-radius: 0.8rem;
   position: relative;
   background-color: #3d3b3b;
@@ -10,13 +13,18 @@
 }
 
 .content {
+  margin-top: 0.5rem;
   display: flex;
 }
 
 .label {
+  text-transform: uppercase;
   color: #a5a0a0;
-  font-size: 2rem;
+  padding: 0.2rem 0 0.2rem 0.3rem;
+  font-size: 1.2rem;
   font-weight: bold;
   letter-spacing: 0.3rem;
-  font-family: 'arcade';
+  background-color: #753e7d;
+  margin-bottom: auto;
+  width: fit-content;
 }
