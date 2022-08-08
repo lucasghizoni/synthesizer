@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, { FC } from 'react';
 
 import styles from './CMajorScale.module.css';
 
@@ -18,23 +18,14 @@ const BLACK_KEYS_LEFT_MULTIPLIER_VAL: { [k in SharpNote]: number } = {
 } as const;
 
 interface Props {
+  activeKey?: Note;
   isOnlyFirstKeyShown?: boolean;
   onMouseOver: (n: Note) => void;
   onMouseLeave: () => void;
-  isMouseDown: boolean;
 }
 
-export const CMajorScale: FC<Props> = ({isOnlyFirstKeyShown, onMouseOver, onMouseLeave, isMouseDown}) => {
-  const [activeKey, setActiveKey] = useState<Note | null>(null);
-
+export const CMajorScale: FC<Props> = ({activeKey, isOnlyFirstKeyShown, onMouseOver, onMouseLeave}) => {
   const cMajorScale = isOnlyFirstKeyShown ? C_MAJOR_SCALE.slice(0,1) : C_MAJOR_SCALE;
-
-  useEffect(() => {
-    onMouseLeave();
-    if(isMouseDown && activeKey) {
-      onMouseOver(activeKey);
-    }
-  }, [activeKey, isMouseDown]);
 
   return (
     <div className={styles.container}>
@@ -42,20 +33,14 @@ export const CMajorScale: FC<Props> = ({isOnlyFirstKeyShown, onMouseOver, onMous
         <div
           key={note}
           className={note.endsWith('#') ? styles.keyBlack : styles.keyWhite}
-          onMouseDown={() => {
-            setActiveKey(note);
-          }}
           onMouseOver={() => {
-            setActiveKey(note);
+            onMouseOver(note);
           }}
           onMouseLeave={() => {
-            setActiveKey(null);
-          }}
-          onMouseUp={() => {
-            setActiveKey(null);
+            onMouseLeave();
           }}
           style={{
-            backgroundColor: isMouseDown && activeKey === note ? '#4eccff' : '',
+            backgroundColor: activeKey === note ? '#4eccff' : '',
             left: note.endsWith('#') ? `${BLACK_KEYS_LEFT_MULTIPLIER_VAL[note as SharpNote] * CSS_LEFT_GAP}rem` : '',
           }}
         />

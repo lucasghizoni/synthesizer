@@ -3,9 +3,9 @@ import React, {FC, useEffect, useState} from 'react';
 import styles from './Knob.module.css';
 
 interface Props {
-  initialValue?: number; // from 0 to 100
+  initialValue?: number; // from 0 to 1
   label?: string;
-  onChange?: (value: number) => void; // from 0 to 100
+  onChange?: (value: number) => void; // from 0 to 1
 }
 
 const DEGREE_VALUES = {
