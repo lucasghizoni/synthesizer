@@ -9,6 +9,7 @@ interface AudioAPI {
 
 export const useAudioContext = () => {
   const [audioAPI, setAudioAPI] = useState<AudioAPI | null>(null);
+  const [frequency, setFrequency] = useState<number | null>(null);
   const [volume, setVolume] = useState(0.3);
   const [attack, setAttack] = useState(0.5);
   const [cutoff, setCutoff] = useState(0.5);
@@ -29,20 +30,47 @@ export const useAudioContext = () => {
     }
   }, [resonance, audioAPI]);
 
+  useEffect(() => {
+    if(audioAPI?.gainNode) {
+      const now = audioAPI?.audioCtx.currentTime;
+      const attackDuration = attack * 2;
+      const attackEnd = now + attackDuration;
+      audioAPI.gainNode.gain.cancelScheduledValues(0);
+      audioAPI.gainNode.gain.linearRampToValueAtTime(volume, attackEnd);
+    }
+  }, [volume, audioAPI]);
+
+  useEffect(() => {
+    if(frequency) {
+      const { audioCtx, gainNode, oscillatorNode } = audioAPI || initAudioApi();
+      gainNode.gain.cancelScheduledValues(0);
+
+      oscillatorNode.frequency.value = frequency;
+      oscillatorNode.type = 'sawtooth';
+
+      const now = audioCtx.currentTime;
+      const attackDuration = attack * 2;
+      const attackEnd = now + attackDuration;
+      const decayDuration = decay * 2;
+
+      gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+      gainNode.gain.linearRampToValueAtTime(volume, attackEnd);
+      gainNode.gain.setTargetAtTime(sustain, attackEnd, decayDuration);
+    }
+  }, [frequency]);
+
   const initAudioApi = (): AudioAPI => {
     const audioCtx = new AudioContext();
     const oscillatorNode = audioCtx.createOscillator();
     const gainNode = audioCtx.createGain();
     const filter = audioCtx.createBiquadFilter();
-
-    oscillatorNode.connect(gainNode);
-
-    gainNode.connect(filter);
-    filter.connect(audioCtx.destination);
-
     filter.type = 'lowpass';
     filter.frequency.value = cutoff * (audioCtx.sampleRate / 2);
     filter.Q.value = 1;
+
+    oscillatorNode.connect(gainNode);
+    gainNode.connect(filter);
+    filter.connect(audioCtx.destination);
 
     oscillatorNode.start();
     setAudioAPI({
@@ -60,6 +88,7 @@ export const useAudioContext = () => {
   }
 
   const stop = () => {
+    setFrequency(null);
     if(audioAPI) {
       const { audioCtx, gainNode } = audioAPI;
       const now = audioCtx.currentTime;
@@ -73,20 +102,7 @@ export const useAudioContext = () => {
 
   return {
     play: (freq: number) => {
-      const { audioCtx, gainNode, oscillatorNode } = audioAPI || initAudioApi();
-      gainNode.gain.cancelScheduledValues(0);
-
-      oscillatorNode.frequency.value = freq;
-      oscillatorNode.type = 'sawtooth';
-
-      const now = audioCtx.currentTime;
-      const attackDuration = attack * 2;
-      const attackEnd = now + attackDuration;
-      const decayDuration = decay * 2;
-
-      gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
-      gainNode.gain.linearRampToValueAtTime(volume, attackEnd);
-      gainNode.gain.setTargetAtTime(sustain, attackEnd, decayDuration);
+      setFrequency(freq);
     },
     stop,
     setAttack,

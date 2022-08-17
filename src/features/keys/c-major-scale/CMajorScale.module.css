@@ -5,6 +5,7 @@
 }
 
 .keyWhite {
+  display: flex;
   border: 0.1rem solid black;
   border-top: 0.2rem solid black;
   border-radius: 0 0 1rem 1rem;
@@ -14,11 +15,20 @@
 }
 
 .keyBlack {
-  /* left property is dynamically inserted */
   position: absolute;
+  display: flex;
   height: 60%;
   width: 2.5rem;
   background-color: black;
   border: 0.1rem solid black;
   border-radius: 0 0 0.5rem 0.5rem;
+}
+
+.label {
+  user-select: none;
+  font-family: "arcade";
+  color: #753d7d;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: auto auto 0;
 }

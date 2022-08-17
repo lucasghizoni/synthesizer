@@ -34,7 +34,7 @@ function App() {
               <Knob initialValue={sustain} onChange={setSustain} label="Sus"/>
               <Knob initialValue={release} onChange={setRelease} label="Rel"/>
             </Box>
-            <Box label="LOWPASS FILTER">
+            <Box label="Lowpass filter">
               <Knob initialValue={cutoff} onChange={setCutoff} label="Cutoff"/>
               <Knob initialValue={resonance} onChange={setResonance} label="Res"/>
             </Box>
