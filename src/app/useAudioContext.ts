@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 
 interface AudioAPI {
   audioCtx: AudioContext;
@@ -9,7 +9,7 @@ interface AudioAPI {
 
 export const useAudioContext = () => {
   const [audioAPI, setAudioAPI] = useState<AudioAPI | null>(null);
-  const [frequency, setFrequency] = useState<number | null>(null);
+  const [frequency, setFrequency] = useState<number | null>();
   const [volume, setVolume] = useState(0.3);
   const [attack, setAttack] = useState(0.5);
   const [cutoff, setCutoff] = useState(0.5);
@@ -41,8 +41,9 @@ export const useAudioContext = () => {
   }, [volume, audioAPI]);
 
   useEffect(() => {
+    const { audioCtx, gainNode, oscillatorNode } = audioAPI || initAudioApi();
     if(frequency) {
-      const { audioCtx, gainNode, oscillatorNode } = audioAPI || initAudioApi();
+
       gainNode.gain.cancelScheduledValues(0);
 
       oscillatorNode.frequency.value = frequency;
@@ -56,6 +57,14 @@ export const useAudioContext = () => {
       gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
       gainNode.gain.linearRampToValueAtTime(volume, attackEnd);
       gainNode.gain.setTargetAtTime(sustain, attackEnd, decayDuration);
+    } else if(frequency === null) {
+
+      const now = audioCtx.currentTime;
+      const releaseDuration = release * 2;
+      const releaseEnd = now + releaseDuration;
+
+      gainNode.gain.setValueAtTime(gainNode.gain.value, now);
+      gainNode.gain.linearRampToValueAtTime(0, releaseEnd);
     }
   }, [frequency]);
 
@@ -68,11 +77,13 @@ export const useAudioContext = () => {
     filter.frequency.value = cutoff * (audioCtx.sampleRate / 2);
     filter.Q.value = 1;
 
+    oscillatorNode.frequency.value = 0;
+
     oscillatorNode.connect(gainNode);
     gainNode.connect(filter);
     filter.connect(audioCtx.destination);
-
     oscillatorNode.start();
+
     setAudioAPI({
       audioCtx,
       filter,
@@ -87,24 +98,13 @@ export const useAudioContext = () => {
     }
   }
 
-  const stop = () => {
-    setFrequency(null);
-    if(audioAPI) {
-      const { audioCtx, gainNode } = audioAPI;
-      const now = audioCtx.currentTime;
-      const releaseDuration = release * 2;
-      const releaseEnd = now + releaseDuration;
-
-      gainNode.gain.setValueAtTime(gainNode.gain.value, now);
-      gainNode.gain.linearRampToValueAtTime(0, releaseEnd);
-    }
-  };
-
   return {
     play: (freq: number) => {
       setFrequency(freq);
     },
-    stop,
+    stop: () => {
+      setFrequency(null);
+    },
     setAttack,
     setCutoff,
     setResonance,

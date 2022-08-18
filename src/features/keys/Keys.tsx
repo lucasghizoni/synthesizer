@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, {FC, useCallback, useEffect, useState} from 'react';
 
 import { CMajorScale, CMajorScaleProps, InteractedNote, Note } from "./c-major-scale/CMajorScale";
 import styles from './Keys.module.css';
@@ -33,39 +33,45 @@ interface Props {
 
 export const Keys: FC<Props> = ({onKeyDown, onKeyUp}) => {
   const [interactedNote, setInteractedNote] = useState<({ octave: Octave } & InteractedNote) | null>(null);
-  const [playingNote, setPlayingNote] = useState<{note: Note, octave: Octave} | null>(null);
+  const [playingNote, setPlayingNote] = useState<{note: Note, octave: Octave} | null>();
   const [isMouseDown, setIsMouseDown] = useState<boolean | null>(null);
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout>();
 
   const isUserPlayingWithKeys = interactedNote?.action === 'keyDown';
   const isUserPlayingWithMouse = isMouseDown && interactedNote?.action === 'mouseOver';
 
-  const handleOnChange = (octave: Octave): CMajorScaleProps['onChange'] => currentInteractedNote => {
+  const useHandleOnChange = (octave: Octave) => useCallback<CMajorScaleProps['onChange']>(currentInteractedNote => {
     if(!(isUserPlayingWithKeys && (currentInteractedNote.action === 'mouseLeave' || currentInteractedNote.action === 'mouseOver'))) {
       setInteractedNote({ octave, note: currentInteractedNote.note, action: currentInteractedNote.action });
     }
-  };
+  }, [isUserPlayingWithKeys, setInteractedNote]);
 
-  const getPlayingNote = (octave: Octave) =>
-    playingNote && playingNote.octave === octave ? playingNote.note : undefined;
+  const getPlayingNote = useCallback((octave: Octave) =>
+    playingNote && playingNote.octave === octave ? playingNote.note : undefined,
+  [playingNote]);
 
   useEffect(() => {
     if(playingNote) {
       onKeyDown(hertzOctavesMap[playingNote.note][playingNote.octave]);
-    } else {
+    } else if (playingNote === null) {
       onKeyUp();
     }
-    },[playingNote, onKeyUp, onKeyDown]);
+  },[playingNote, onKeyUp, onKeyDown]);
 
   useEffect(() => {
     if(isUserPlayingWithKeys || isUserPlayingWithMouse) {
       clearTimeout(timeoutId);
       setPlayingNote({ note: interactedNote.note, octave: interactedNote.octave });
-    } else {
-      const currentTimeoutId = setTimeout(() => {
+    } else if (playingNote !== undefined) {
+      if(interactedNote?.action === 'keyUp') {
+        // if its keyup event, we delay it to have smooth transition from keyUp to keyDown
+        const currentTimeoutId = setTimeout(() => {
+          setPlayingNote(null);
+        }, 500);
+        setTimeoutId(currentTimeoutId);
+      } else {
         setPlayingNote(null);
-      }, 500);
-      setTimeoutId(currentTimeoutId);
+      }
     }
   }, [isMouseDown, setPlayingNote, interactedNote, isUserPlayingWithKeys, isUserPlayingWithMouse]);
 
@@ -77,21 +83,21 @@ export const Keys: FC<Props> = ({onKeyDown, onKeyUp}) => {
       onMouseDown={() => setIsMouseDown(true)}
     >
       <CMajorScale
-        onChange={handleOnChange(1)}
+        onChange={useHandleOnChange(1)}
         computerKeys={computerKeys.slice(0, 12)}
         activeNote={getPlayingNote(1)}
       />
       <CMajorScale
-        onChange={handleOnChange(2)}
+        onChange={useHandleOnChange(2)}
         computerKeys={computerKeys.slice(12, 17)}
         activeNote={getPlayingNote(2)}
       />
       <CMajorScale
-        onChange={handleOnChange(3)}
+        onChange={useHandleOnChange(3)}
         activeNote={getPlayingNote(3)}
       />
       <CMajorScale
-        onChange={handleOnChange(4)}
+        onChange={useHandleOnChange(4)}
         activeNote={getPlayingNote(4)}
         isOnlyFirstKeyShown={true}
       />
