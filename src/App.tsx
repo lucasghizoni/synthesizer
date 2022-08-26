@@ -1,23 +1,28 @@
 import React from 'react';
 
 import styles from './App.module.css';
-import { Keys } from "./features/keys/Keys";
-import { useAudioContext } from "./app/useAudioContext";
+import { Keyboard } from "./features/keyboard/Keyboard";
+import { useAudioAPI } from "./app/useAudioAPI";
 import { Knob } from "./features/knob/Knob";
 import { Panel } from "./components/panel/Panel";
 import { Box } from "./components/box/Box";
 
 function App() {
   const {
-    attack, setAttack,
-    decay, setDecay,
-    sustain, setSustain,
-    volume, setVolume,
-    release, setRelease,
+    attack,
+    release,
+    decay,
+    sustain,
+    volume,
+    setAttack,
+    setDecay,
+    setSustain,
+    setVolume,
+    setRelease,
     cutoff, setCutoff,
     resonance, setResonance,
-    play, stop,
-  } = useAudioContext();
+    setFrequency,
+  } = useAudioAPI();
 
   return (
     <section className={styles.main}>
@@ -26,24 +31,21 @@ function App() {
         <div className={styles.synth}>
           <Panel className={styles.controllersPanel}>
             <Box label="Master">
-              <Knob initialValue={volume} onChange={setVolume} label="Vol"/>
+              <Knob value={volume} onChange={setVolume} label="Vol"/>
             </Box>
             <Box label="Envelope">
-              <Knob initialValue={attack} onChange={setAttack} label="Atk"/>
-              <Knob initialValue={decay} onChange={setDecay} label="Dec"/>
-              <Knob initialValue={sustain} onChange={setSustain} label="Sus"/>
-              <Knob initialValue={release} onChange={setRelease} label="Rel"/>
+              <Knob value={attack} onChange={setAttack} label="Atk"/>
+              <Knob value={decay} onChange={setDecay} label="Dec"/>
+              <Knob value={sustain} onChange={setSustain} label="Sus"/>
+              <Knob value={release} onChange={setRelease} label="Rel"/>
             </Box>
             <Box label="Lowpass filter">
-              <Knob initialValue={cutoff} onChange={setCutoff} label="Cutoff"/>
-              <Knob initialValue={resonance} onChange={setResonance} label="Res"/>
+              <Knob value={cutoff} onChange={setCutoff} label="Cutoff"/>
+              <Knob value={resonance} onChange={setResonance} label="Res"/>
             </Box>
           </Panel>
           <Panel>
-            <Keys
-              onKeyUp={stop}
-              onKeyDown={play}
-            />
+            <Keyboard onPlay={setFrequency} />
           </Panel>
         </div>
         <h1>{`<ReactSynth/>`}</h1>

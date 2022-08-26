@@ -3,26 +3,26 @@ import React, {FC, useEffect, useState} from 'react';
 import styles from './Knob.module.css';
 
 interface Props {
-  initialValue?: number; // from 0 to 1
+  value: number; // from 0 to 1
   label?: string;
-  onChange?: (value: number) => void; // from 0 to 1
+  onChange?: (value: number) => void;
 }
 
 const DEGREE_VALUES = {
   START: 160,
-  END: 500,
+  END: 510,
 } as const;
 
 const SPEED_FACTOR = 8;
 
 const calculateValue = (degree: number) =>
-  Math.round((degree - DEGREE_VALUES.START) * 100 / (DEGREE_VALUES.END - DEGREE_VALUES.START)) / 100;
+  Number(((Math.round((degree - DEGREE_VALUES.START) * 100 / (DEGREE_VALUES.END - DEGREE_VALUES.START)) / 100).toFixed(1)));
 
 const calculateDegree = (value: number) =>
   Math.round((((DEGREE_VALUES.END - DEGREE_VALUES.START) * (value * 100)) / 100) + DEGREE_VALUES.START);
 
-export const Knob: FC<Props> = ({ label, onChange = () => {} , initialValue = 80}) => {
-  const [rotateDegree, setRotateDegree] = useState<number>(calculateDegree(initialValue));
+export const Knob: FC<Props> = ({ label, onChange = () => {} , value = 0.5}) => {
+  const [rotateDegree, setRotateDegree] = useState<number>(calculateDegree(value));
   const [dragData, setDragData] = useState<{ isDirectionUp?: boolean, y?: number }>({});
 
   const handleMouseMove = (e: MouseEventInit) => {
@@ -38,24 +38,26 @@ export const Knob: FC<Props> = ({ label, onChange = () => {} , initialValue = 80
   };
 
   useEffect(() => {
-    setRotateDegree(old => {
-      const newValue = old + (dragData.isDirectionUp ? -SPEED_FACTOR : SPEED_FACTOR);
+    setRotateDegree(rotDegree => {
+      let newRotDegree = (rotDegree + (dragData.isDirectionUp ? - SPEED_FACTOR : SPEED_FACTOR));
 
-      if(DEGREE_VALUES.START > newValue) {
+      if(DEGREE_VALUES.START > newRotDegree) {
         return DEGREE_VALUES.START;
       }
 
-      if(DEGREE_VALUES.END < newValue) {
+      if(DEGREE_VALUES.END < newRotDegree) {
         return DEGREE_VALUES.END;
       }
-
-      return newValue;
+      return newRotDegree;
     });
   }, [dragData]);
 
   useEffect(() => {
-    onChange(calculateValue(rotateDegree));
-  }, [onChange, rotateDegree]);
+    const newValue = calculateValue(rotateDegree);
+    if(value !== newValue) {
+      onChange(newValue);
+    }
+  }, [rotateDegree, value, onChange]);
 
   const handleMouseUp = () => {
     document.body.removeEventListener('mouseup', handleMouseUp);
