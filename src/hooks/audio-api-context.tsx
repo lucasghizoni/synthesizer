@@ -1,9 +1,36 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import React, {useEffect, useMemo, useRef, useState, createContext, FC, ReactNode} from "react";
+
+interface ContextState {
+  frequency: number | null;
+  setFrequency: (value: number | null) => void;
+  master: {
+    volume: number;
+    setVolume: (value: number) => void;
+  };
+  envelope: {
+    attack: number;
+    sustain: number;
+    decay: number;
+    release: number;
+    setAttack: (value: number) => void;
+    setSustain: (value: number) => void;
+    setDecay: (value: number) => void;
+    setRelease: (value: number) => void;
+  };
+  lowPassFilter: {
+    resonance: number;
+    cutoff: number;
+    setResonance: (value: number) => void;
+    setCutoff: (value: number) => void;
+  };
+}
+
+export const AudioAPIContext = createContext<ContextState>({} as ContextState);
 
 interface AudioAPI {
   audioCtx: AudioContext,
   filter: BiquadFilterNode;
-  oscillatorNode: OscillatorNode;
+  oscillators: OscillatorNode[];
   gainNode: GainNode;
 }
 
@@ -16,12 +43,13 @@ const createGainNode = (audioCtx: AudioContext) => {
   return gainNode;
 };
 
-const createOscillatorNode = (audioCtx: AudioContext) => {
-  const oscillatorNode = audioCtx.createOscillator();
-  oscillatorNode.frequency.value = 0;
-  oscillatorNode.type = 'sawtooth';
-  oscillatorNode.start();
-  return oscillatorNode;
+const createOscillatorNode = (audioCtx: AudioContext, detune: number) => {
+  const oscillator = audioCtx.createOscillator();
+  oscillator.frequency.value = 0;
+  oscillator.detune.value = detune;
+  oscillator.type = 'sawtooth';
+  oscillator.start();
+  return oscillator;
 }
 
 const createFilterNode = (audioCtx: AudioContext) => {
@@ -30,7 +58,7 @@ const createFilterNode = (audioCtx: AudioContext) => {
   return filter;
 }
 
-export const useAudioAPI = () => {
+export const AudioApiProvider: FC<{ children: ReactNode }> = ({ children}) => {
   const isPlaying = useRef(false);
   const [frequency, setFrequency] = useState<number | null>(null);
   const [cutoff, setCutoff] = useState(INITIAL_VALUE);
@@ -41,13 +69,17 @@ export const useAudioAPI = () => {
   const [decay, setDecay] = useState(INITIAL_VALUE);
   const [release, setRelease] = useState(INITIAL_VALUE);
 
-  const { audioCtx, gainNode, oscillatorNode, filter } = useMemo((): AudioAPI => {
+  const { audioCtx, gainNode, oscillators, filter } = useMemo((): AudioAPI => {
     const audioCtx = new AudioContext();
-    const oscillatorNode = createOscillatorNode(audioCtx);
+    const oscillators = [
+      createOscillatorNode(audioCtx, -10),
+      createOscillatorNode(audioCtx, 10),
+    ];
     const gainNode = createGainNode(audioCtx);
     const filter = createFilterNode(audioCtx);
 
-    oscillatorNode.connect(gainNode);
+    oscillators.forEach(osc => osc.connect(gainNode));
+
     gainNode.connect(filter);
     filter.connect(audioCtx.destination);
 
@@ -56,7 +88,7 @@ export const useAudioAPI = () => {
     return {
       audioCtx,
       filter,
-      oscillatorNode,
+      oscillators,
       gainNode,
     }
   }, [setVolume]);
@@ -81,11 +113,12 @@ export const useAudioAPI = () => {
       const attackDuration = attack * 2;
       const attackEnd = now + attackDuration;
       const decayDuration = decay * 2;
-      oscillatorNode.frequency.value = frequency;
+
+      oscillators.forEach(osc => osc.frequency.value = frequency);
 
       gainNode.gain.linearRampToValueAtTime(volume, attackEnd);
 
-      if(!isPlaying) {
+      if(!isPlaying.current) {
         gainNode.gain.setValueAtTime(0, now);
         gainNode.gain.setTargetAtTime(sustain, attackEnd, decayDuration);
       }
@@ -97,23 +130,26 @@ export const useAudioAPI = () => {
       gainNode.gain.linearRampToValueAtTime(0, releaseEnd);
       isPlaying.current = false;
     }
-  }, [audioCtx, frequency, attack, decay, sustain, release, volume, gainNode, oscillatorNode]);
+  }, [audioCtx, frequency, attack, decay, sustain, release, volume, gainNode, oscillators]);
 
-  return {
-    setFrequency,
-    setCutoff,
-    setResonance,
-    setVolume,
-    cutoff,
-    resonance,
-    setAttack,
-    setSustain,
-    setDecay,
-    setRelease,
-    decay,
-    sustain,
-    volume,
-    attack,
-    release,
-  }
+  return <AudioAPIContext.Provider
+    value={{
+      frequency,
+      setFrequency,
+      master: {
+        volume,
+        setVolume,
+      },
+      envelope: {
+        attack, decay, sustain, release,
+        setAttack, setSustain, setDecay, setRelease
+      },
+      lowPassFilter: {
+        cutoff, resonance,
+        setCutoff, setResonance
+      },
+    }}
+  >
+    {children}
+  </AudioAPIContext.Provider>;
 }

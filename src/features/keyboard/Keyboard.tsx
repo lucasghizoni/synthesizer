@@ -1,87 +1,39 @@
-import React, {FC, useCallback, useEffect, useState} from 'react';
+import React, { FC } from 'react';
 
-import { KeyboardSlice, InteractedNote } from "./keyboard-slice/KeyboardSlice";
+import { KeyboardSlice } from "./keyboard-slice/KeyboardSlice";
 import styles from './Keyboard.module.css';
 import { firstOctave, fourthOctave, secondOctave, thirdOctave } from "./octaves";
+import { useFrequency } from "../../hooks/useFrequency";
+import { useInteractedNote } from "./useInteractedNote";
 
-interface Props {
-  onPlay: (freq: number | null) => void;
-}
-
-export const Keyboard: FC<Props> = ({ onPlay }) => {
-  const [interactedNote, setInteractedNote] = useState<InteractedNote | null>(null);
-  const [playingFreq, setPlayingFreq] = useState<number | null>();
-  const [isMouseDown, setIsMouseDown] = useState<boolean>(false);
-  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout>();
-
-  useEffect(() => {
-    if(playingFreq || playingFreq === null) {
-      onPlay(playingFreq);
-    }
-  },[playingFreq, onPlay]);
-
-  const handleChange = useCallback(({ freq, action }: InteractedNote) => {
-    setInteractedNote(old => {
-      const isUserPlayingWithKeys = old?.action === 'keyDown';
-      if(isUserPlayingWithKeys && (action === 'mouseLeave' || action === 'mouseOver')) {
-        return old;
-      }
-      return { freq, action };
-    });
-  }, [setInteractedNote]);
-
-  useEffect(() => {
-    const isUserPlayingWithKeys = interactedNote?.action === 'keyDown';
-    const isUserPlayingWithMouse = isMouseDown && interactedNote?.action === 'mouseOver';
-
-    if(interactedNote && (isUserPlayingWithKeys || isUserPlayingWithMouse)) {
-      const isSameNote = playingFreq === interactedNote.freq;
-
-      if(isSameNote) return;
-
-      clearTimeout(timeoutId);
-      setTimeoutId(undefined);
-
-      setPlayingFreq(interactedNote.freq);
-    } else {
-      if(!playingFreq || timeoutId) return;
-
-      if(interactedNote?.action === 'keyUp') {
-        // if its keyup event, we delay it to have smooth sound transition from keyUp to next keyDown event
-        const currentTimeoutId = setTimeout(() => setPlayingFreq(null), 300);
-        setTimeoutId(currentTimeoutId);
-      } else {
-        setPlayingFreq(null);
-      }
-    }
-  }, [isMouseDown, setPlayingFreq, interactedNote, timeoutId, playingFreq]);
+export const Keyboard: FC = () => {
+  const { setFrequency, frequency } = useFrequency();
+  const { onMouseOverNote, ...rest } = useInteractedNote(frequency, setFrequency);
 
   return (
     <div
       className={styles.container}
-      onMouseLeave={() => setIsMouseDown(false)}
-      onMouseUp={() => setIsMouseDown(false)}
-      onMouseDown={() => setIsMouseDown(true)}
+      {...rest}
     >
       <KeyboardSlice
-        onChange={handleChange}
+        onMouseOverNote={onMouseOverNote}
         keyNotes={firstOctave}
-        playingFreq={playingFreq}
+        playingFreq={frequency}
       />
       <KeyboardSlice
-        onChange={handleChange}
+        onMouseOverNote={onMouseOverNote}
         keyNotes={secondOctave}
-        playingFreq={playingFreq}
+        playingFreq={frequency}
       />
       <KeyboardSlice
-        onChange={handleChange}
+        onMouseOverNote={onMouseOverNote}
         keyNotes={thirdOctave}
-        playingFreq={playingFreq}
+        playingFreq={frequency}
       />
       <KeyboardSlice
-        onChange={handleChange}
+        onMouseOverNote={onMouseOverNote}
         keyNotes={fourthOctave}
-        playingFreq={playingFreq}
+        playingFreq={frequency}
       />
     </div>
   )

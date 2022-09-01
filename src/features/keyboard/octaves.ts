@@ -54,3 +54,10 @@ export const thirdOctave: readonly KeyNote[] = [
 export const fourthOctave: readonly KeyNote[] = [
   { note: 'C',  freq: 261 },
 ];
+
+export const allNotesWithComputerKeyMap =
+  [...firstOctave, ...secondOctave, ...thirdOctave, ...fourthOctave]
+    .reduce<{[k: string]: KeyNote}>((prev, curr) => ({
+      ...prev,
+      ...curr.computerKey && {[curr.computerKey]: curr},
+    }), {});
