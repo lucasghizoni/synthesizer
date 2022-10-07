@@ -1,9 +1,8 @@
-import React from 'react';
-
-import { AudioAPIContext } from "./audio-api-context";
+import { useContext } from "react";
+import { EnvelopeContext } from "../context/envelope";
 
 export const useEnvelope = () => {
-  const { envelope } = React.useContext(AudioAPIContext);
+  const envelope = useContext(EnvelopeContext);
 
   return envelope;
-};
+}

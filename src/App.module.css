@@ -25,6 +25,10 @@ h1 {
   margin-bottom: 0.7rem;
 }
 
+.controllersPanel > :not(:first-child) {
+  margin-left: 2rem;
+}
+
 .controllersPanel:active {
   cursor: grabbing;
 }

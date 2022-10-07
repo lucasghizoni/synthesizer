@@ -1,9 +1,14 @@
-import React from 'react';
+import { useContext } from 'react';
 
-import { AudioAPIContext } from "./audio-api-context";
+import { FilterContext } from "../context/filter";
+import { SynthCoreContext } from "../context/synth-core";
 
 export const useLowPassFilter = () => {
-  const { lowPassFilter } = React.useContext(AudioAPIContext);
+  const { audioCtx } = useContext(SynthCoreContext);
+  const { setCutoff, ...rest } = useContext(FilterContext);
 
-  return lowPassFilter;
+  return {
+    setCutoff: (value: number) => setCutoff(value, audioCtx!.sampleRate),
+    ...rest,
+  };
 };

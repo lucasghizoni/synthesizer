@@ -1,10 +1,12 @@
 import React, {FC, useEffect, useState} from 'react';
 
 import styles from './Knob.module.css';
+import cx from "classnames";
 
 interface Props {
   value: number; // from 0 to 1
   label?: string;
+  variant?: 'small' | 'regular';
   onChange?: (value: number) => void;
 }
 
@@ -21,7 +23,7 @@ const calculateValue = (degree: number) =>
 const calculateDegree = (value: number) =>
   Math.round((((DEGREE_VALUES.END - DEGREE_VALUES.START) * (value * 100)) / 100) + DEGREE_VALUES.START);
 
-export const Knob: FC<Props> = ({ label, onChange = () => {} , value = 0.5}) => {
+export const Knob: FC<Props> = ({ label, onChange = () => {} , value, variant = 'regular'}) => {
   const [rotateDegree, setRotateDegree] = useState<number>(calculateDegree(value));
   const [dragData, setDragData] = useState<{ isDirectionUp?: boolean, y?: number }>({});
 
@@ -70,9 +72,12 @@ export const Knob: FC<Props> = ({ label, onChange = () => {} , value = 0.5}) => 
   };
 
   return (
-    <div onMouseDown={handleMouseDown} className={styles.container}>
-      <div className={styles.slider}>
-        <div style={{ transform: `rotate(${rotateDegree}deg)` }} className={styles.knob}/>
+    <div onMouseDown={handleMouseDown} className={cx(styles.container, variant === 'small' && styles.containerSmall)}>
+      <div className={cx(styles.slider, variant === 'small' && styles.sliderSmall)}>
+        <div
+          style={{ transform: `rotate(${rotateDegree}deg)` }}
+          className={cx(styles.knob, variant === 'small' && styles.knobSmall)}
+        />
       </div>
       {label && <span className={styles.label}>{label}</span>}
     </div>

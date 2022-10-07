@@ -1,0 +1,15 @@
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.knobs {
+  display: flex;
+}
+
+.separator {
+  width: 0.1rem;
+  background-color: #608099;
+  margin: 0 1rem;
+}

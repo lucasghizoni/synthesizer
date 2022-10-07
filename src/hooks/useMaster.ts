@@ -1,9 +1,8 @@
-import React from 'react';
-
-import { AudioAPIContext } from "./audio-api-context";
+import { useContext } from "react";
+import { MasterContext } from "../context/master";
 
 export const useMaster = () => {
-  const { master } = React.useContext(AudioAPIContext);
+  const context = useContext(MasterContext);
 
-  return master;
+  return context;
 };

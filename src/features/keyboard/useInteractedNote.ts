@@ -10,7 +10,6 @@ export interface PressedNote {
 }
 
 export const useInteractedNote = (
-  frequency: number | null,
   setFrequency: (value: number | null) => void,
 ) => {
   const [isMouseDown, setIsMouseDown] = useState<boolean>(false);

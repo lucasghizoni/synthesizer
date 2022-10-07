@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import { Box } from "../../components/box/Box";
 import { Knob } from "../../components/knob/Knob";
-import {useEnvelope} from "../../hooks/useEnvelope";
+import { useEnvelope } from "../../hooks/useEnvelope";
 
 export const Envelope: FC = () => {
   const {
-    attack, release, decay, sustain,
-    setAttack, setDecay, setSustain, setRelease,
+      attack, release, decay, sustain,
+      setAttack, setDecay, setSustain, setRelease,
   } = useEnvelope();
 
   return (
