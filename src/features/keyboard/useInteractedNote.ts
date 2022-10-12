@@ -37,7 +37,7 @@ export const useInteractedNote = (
 
     window.addEventListener("keydown", handleOnKeyDown);
     window.addEventListener("keyup", handleOnKeyUp);
-    // Remove event listeners on cleanup
+
     return () => {
       window.removeEventListener("keydown", handleOnKeyDown);
       window.removeEventListener("keyup", handleOnKeyUp);

@@ -1,4 +1,5 @@
 .container {
-  justify-content: center;
   display: flex;
+  width: fit-content;
+  margin: auto;
 }

@@ -4,7 +4,8 @@ import styles from './Knob.module.css';
 import cx from "classnames";
 
 interface Props {
-  value: number; // from 0 to 1
+  maxValue?: number;
+  value: number;
   label?: string;
   variant?: 'small' | 'regular';
   onChange?: (value: number) => void;
@@ -17,14 +18,21 @@ const DEGREE_VALUES = {
 
 const SPEED_FACTOR = 8;
 
-const calculateValue = (degree: number) =>
-  Number(((Math.round((degree - DEGREE_VALUES.START) * 100 / (DEGREE_VALUES.END - DEGREE_VALUES.START)) / 100).toFixed(1)));
+const calculateValue = (degree: number, max: number) =>
+  Number(((Math.round((degree - DEGREE_VALUES.START) * 100 * max / (DEGREE_VALUES.END - DEGREE_VALUES.START)) / 100).toFixed(1)));
 
-const calculateDegree = (value: number) =>
-  Math.round((((DEGREE_VALUES.END - DEGREE_VALUES.START) * (value * 100)) / 100) + DEGREE_VALUES.START);
+const calculateDegree = (value: number, max: number) =>
+  Math.round((((DEGREE_VALUES.END - DEGREE_VALUES.START) * (value * 100)) / (100 * max)) + DEGREE_VALUES.START);
 
-export const Knob: FC<Props> = ({ label, onChange = () => {} , value, variant = 'regular'}) => {
-  const [rotateDegree, setRotateDegree] = useState<number>(calculateDegree(value));
+export const Knob: FC<Props> = ({
+  label,
+  maxValue = 1,
+  onChange = () => {},
+  value,
+  variant = 'regular',
+}) => {
+  console.log(label);
+  const [rotateDegree, setRotateDegree] = useState<number>(calculateDegree(value, maxValue));
   const [dragData, setDragData] = useState<{ isDirectionUp?: boolean, y?: number }>({});
 
   const handleMouseMove = (e: MouseEventInit) => {
@@ -55,11 +63,11 @@ export const Knob: FC<Props> = ({ label, onChange = () => {} , value, variant = 
   }, [dragData]);
 
   useEffect(() => {
-    const newValue = calculateValue(rotateDegree);
+    const newValue = calculateValue(rotateDegree, maxValue);
     if(value !== newValue) {
       onChange(newValue);
     }
-  }, [rotateDegree, value, onChange]);
+  }, [rotateDegree, value, onChange, maxValue]);
 
   const handleMouseUp = () => {
     document.body.removeEventListener('mouseup', handleMouseUp);

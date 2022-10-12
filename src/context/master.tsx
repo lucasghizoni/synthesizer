@@ -14,9 +14,9 @@ export const MasterProvider: FC<{ children: JSX.Element }> = ({ children}) => {
   const [masterGainNode, setMasterGainNode] = useState<GainNode>();
 
   const setMasterNode = useCallback((gainNode: GainNode) => {
-    setVolume(gainNode.gain.value);
+    gainNode.gain.value = volume;
     setMasterGainNode(gainNode);
-  }, []);
+  }, [volume]);
 
   return <MasterContext.Provider
     value={{

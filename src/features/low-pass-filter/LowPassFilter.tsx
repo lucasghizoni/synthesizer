@@ -9,7 +9,7 @@ export const LowPassFilter: FC = () => {
 
   return (
     <Box label="Lowpass filter">
-      <Knob value={cutoff} onChange={setCutoff} label="Cutoff"/>
+      <Knob value={cutoff} onChange={setCutoff} label="Cutoff" maxValue={100}/>
       <Knob value={resonance} onChange={setResonance} label="Res"/>
     </Box>
   );

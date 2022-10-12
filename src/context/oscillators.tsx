@@ -6,6 +6,7 @@ interface OscillatorState {
     gain?: GainNode;
   };
   volume: number;
+  detune: number;
   waveform: Omit<OscillatorType, 'custom'>;
 }
 
@@ -14,20 +15,29 @@ interface OscillatorContextState {
   secondOscillator: OscillatorState;
   setOscillatorNodes: (first: { oscillator: OscillatorNode, gain: GainNode }, second: { oscillator: OscillatorNode, gain: GainNode }) => void;
   setWaveform: (waveform: Omit<OscillatorType, 'custom'>, oscillator: 'first' | 'second') => void;
-  setVolume: (volume: number, oscillator: 'first' | 'second') => void;
+  setDetune: (value: number, oscillator: 'first' | 'second') => void;
+  setVolume: (value: number, oscillator: 'first' | 'second') => void;
 }
 
 export const OscillatorsContext  = createContext({} as OscillatorContextState);
 
-const oscillatorInitialState = {
+const firstOscInitialState = {
   nodes: {},
-  volume: 0.3,
+  volume: 0.7,
+  detune: 90,
+  waveform: 'triangle'
+};
+
+const secondOscInitialState = {
+  nodes: {},
+  volume: 0.5,
+  detune: 60,
   waveform: 'sine'
-}
+};
 
 export const OscillatorsProvider: FC<{ children: JSX.Element }> = ({ children}) => {
-  const [firstOscillator, setFirstOscillator] = useState<OscillatorState>(oscillatorInitialState);
-  const [secondOscillator, setSecondOscillator] = useState<OscillatorState>(oscillatorInitialState);
+  const [firstOscillator, setFirstOscillator] = useState<OscillatorState>(firstOscInitialState);
+  const [secondOscillator, setSecondOscillator] = useState<OscillatorState>(secondOscInitialState);
 
   const setWaveform: OscillatorContextState['setWaveform'] = (waveform, oscillator) => {
     const setFunction = oscillator === 'first' ? setFirstOscillator : setSecondOscillator;
@@ -40,6 +50,21 @@ export const OscillatorsProvider: FC<{ children: JSX.Element }> = ({ children}) 
       return {
         ...state,
         waveform,
+      }
+    });
+  };
+
+  const setDetune: OscillatorContextState['setDetune'] = (value, oscillator) => {
+    const setFunction = oscillator === 'first' ? setFirstOscillator : setSecondOscillator;
+    setFunction(state => {
+      const oscNode = state.nodes.oscillator;
+      if(!oscNode) return state;
+
+      oscNode.detune.value = value * 10;
+
+      return {
+        ...state,
+        detune: value,
       }
     });
   };
@@ -60,17 +85,23 @@ export const OscillatorsProvider: FC<{ children: JSX.Element }> = ({ children}) 
   };
 
   const setOscillatorNodes: OscillatorContextState['setOscillatorNodes'] = useCallback((first, second) => {
-    setFirstOscillator({
-      volume: first.gain.gain.value,
-      waveform: first.oscillator.type,
+    first.oscillator.type = firstOscillator.waveform as OscillatorType;
+    first.oscillator.detune.value = firstOscillator.detune * 100;
+    first.gain.gain.value = firstOscillator.volume;
+
+    second.oscillator.type = secondOscillator.waveform as OscillatorType;
+    second.oscillator.detune.value = secondOscillator.detune * 100;
+    second.gain.gain.value = secondOscillator.volume;
+
+    setFirstOscillator(state => ({
+      ...state,
       nodes: first,
-    });
-    setSecondOscillator({
-      volume: second.gain.gain.value,
-      waveform: second.oscillator.type,
+    }));
+    setSecondOscillator(state => ({
+      ...state,
       nodes: second,
-    });
-  }, []);
+    }));
+  }, [firstOscillator, secondOscillator]);
 
   return <OscillatorsContext.Provider
     value={{
@@ -78,6 +109,7 @@ export const OscillatorsProvider: FC<{ children: JSX.Element }> = ({ children}) 
       secondOscillator,
       setWaveform,
       setVolume,
+      setDetune,
       setOscillatorNodes,
     }}
   >

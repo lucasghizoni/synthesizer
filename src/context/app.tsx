@@ -3,7 +3,8 @@ import { EnvelopeProvider } from "./envelope";
 import { MasterProvider } from "./master";
 import { OscillatorsProvider } from "./oscillators";
 import { FilterProvider } from "./filter";
-import { SynthCoreProvider } from "./synth-core";
+import { AudioAPIProvider } from "./audio-api";
+import { FrequencyProvider } from "./frequency";
 
 type FCWithChildren = FC<{ children: JSX.Element }>;
 
@@ -16,8 +17,9 @@ const compose = (providers: FCWithChildren[]) =>
   );
 
 export const AppProvider: FCWithChildren = compose([
-  SynthCoreProvider,
+  AudioAPIProvider,
   EnvelopeProvider,
+  FrequencyProvider,
   MasterProvider,
   OscillatorsProvider,
   FilterProvider,

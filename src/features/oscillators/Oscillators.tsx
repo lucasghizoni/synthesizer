@@ -6,7 +6,7 @@ import { Knob } from "../../components/knob/Knob";
 import styles from './Oscillators.module.css';
 
 export const Oscillators: FC = () => {
-  const { firstOscillator, secondOscillator, setWaveform, setVolume } = useOscillators();
+  const { firstOscillator, secondOscillator, setWaveform, setVolume, setDetune } = useOscillators();
 
   return (
     <Box label="Oscillators">
@@ -19,7 +19,13 @@ export const Oscillators: FC = () => {
             onChange={value =>  setVolume(value, 'first')}
             value={firstOscillator.volume}
           />
-          <Knob variant="small" label="Tune" value={0.3} />
+          <Knob
+            variant="small"
+            label="Tune"
+            onChange={value =>  setDetune(value, 'first')}
+            value={firstOscillator.detune}
+            maxValue={100}
+          />
         </div>
       </div>
       <div className={styles.separator}></div>
@@ -31,7 +37,13 @@ export const Oscillators: FC = () => {
             label="Vol" onChange={value => setVolume(value, 'second')}
             value={secondOscillator.volume}
           />
-          <Knob variant="small" label="Tune" value={0.3} />
+          <Knob
+            variant="small"
+            label="Tune"
+            onChange={value =>  setDetune(value, 'second')}
+            value={secondOscillator.detune}
+            maxValue={100}
+          />
         </div>
       </div>
     </Box>

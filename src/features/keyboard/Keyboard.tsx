@@ -4,15 +4,17 @@ import { KeyboardSlice } from "./keyboard-slice/KeyboardSlice";
 import styles from './Keyboard.module.css';
 import { firstOctave, fourthOctave, secondOctave, thirdOctave } from "./octaves";
 import { useInteractedNote } from "./useInteractedNote";
-import { useSynthCore } from "../../hooks/useSynthCore";
+import { useAudioAPI } from "../../hooks/useAudioAPI";
 import { useOscillators } from "../../hooks/useOscillators";
-import {useEnvelope} from "../../hooks/useEnvelope";
-import {useMaster} from "../../hooks/useMaster";
+import { useEnvelope } from "../../hooks/useEnvelope";
+import { useMaster } from "../../hooks/useMaster";
+import { useFrequency } from "../../hooks/useFrequency";
 
 export const Keyboard: FC = () => {
   const isPlaying = useRef(false);
 
-  const { audioCtx, frequency, setFrequency } = useSynthCore();
+  const { getAudioCtx } = useAudioAPI();
+  const { frequency, setFrequency } = useFrequency();
   const { firstOscillator, secondOscillator } = useOscillators();
   const {attack, release, decay, sustain} = useEnvelope();
   const { volume, masterGainNode } = useMaster();
@@ -20,9 +22,10 @@ export const Keyboard: FC = () => {
   const { onMouseOverNote, ...rest } = useInteractedNote(setFrequency);
 
   useEffect(() => {
-    if((!frequency && !isPlaying.current) || !masterGainNode || !firstOscillator.nodes.oscillator || !secondOscillator.nodes.oscillator) return;
+    const now = getAudioCtx().currentTime;
+    const shouldNotPlay = !frequency && !isPlaying.current;
+    if(shouldNotPlay || !masterGainNode || !firstOscillator.nodes.oscillator || !secondOscillator.nodes.oscillator) return;
 
-    const now = audioCtx!.currentTime;
 
     masterGainNode.gain.cancelScheduledValues(0);
     if(frequency) {
@@ -47,7 +50,7 @@ export const Keyboard: FC = () => {
       masterGainNode.gain.linearRampToValueAtTime(0, releaseEnd);
       isPlaying.current = false;
     }
-  }, [audioCtx, frequency, attack, decay, sustain, release, masterGainNode, firstOscillator, secondOscillator, volume]);
+  }, [getAudioCtx, frequency, attack, decay, sustain, release, masterGainNode, firstOscillator, secondOscillator, volume]);
 
   return (
     <div
