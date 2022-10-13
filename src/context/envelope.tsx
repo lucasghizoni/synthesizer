@@ -17,7 +17,7 @@ export const EnvelopeProvider: FC<{ children: JSX.Element }> = ({ children}) => 
   const [attack, setAttack] = useState(0.5);
   const [sustain, setSustain] = useState(0.5);
   const [decay, setDecay] = useState(0.5);
-  const [release, setRelease] = useState(0.5);
+  const [release, setRelease] = useState(0.8);
 
   return <EnvelopeContext.Provider
     value={{

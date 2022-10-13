@@ -22,10 +22,11 @@ export const Keyboard: FC = () => {
   const { onMouseOverNote, ...rest } = useInteractedNote(setFrequency);
 
   useEffect(() => {
-    const now = getAudioCtx().currentTime;
-    const shouldNotPlay = !frequency && !isPlaying.current;
-    if(shouldNotPlay || !masterGainNode || !firstOscillator.nodes.oscillator || !secondOscillator.nodes.oscillator) return;
+    if(!frequency && !isPlaying.current) return;
 
+    const now = getAudioCtx().currentTime;
+
+    if(!masterGainNode || !firstOscillator.nodes.oscillator || !secondOscillator.nodes.oscillator) return;
 
     masterGainNode.gain.cancelScheduledValues(0);
     if(frequency) {

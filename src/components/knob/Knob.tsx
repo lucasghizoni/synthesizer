@@ -22,7 +22,7 @@ const calculateValue = (degree: number, max: number) =>
   Number(((Math.round((degree - DEGREE_VALUES.START) * 100 * max / (DEGREE_VALUES.END - DEGREE_VALUES.START)) / 100).toFixed(1)));
 
 const calculateDegree = (value: number, max: number) =>
-  Math.round((((DEGREE_VALUES.END - DEGREE_VALUES.START) * (value * 100)) / (100 * max)) + DEGREE_VALUES.START);
+  Math.round((((DEGREE_VALUES.END - DEGREE_VALUES.START) * value / max) + DEGREE_VALUES.START));
 
 export const Knob: FC<Props> = ({
   label,
@@ -31,7 +31,6 @@ export const Knob: FC<Props> = ({
   value,
   variant = 'regular',
 }) => {
-  console.log(label);
   const [rotateDegree, setRotateDegree] = useState<number>(calculateDegree(value, maxValue));
   const [dragData, setDragData] = useState<{ isDirectionUp?: boolean, y?: number }>({});
 
@@ -48,6 +47,8 @@ export const Knob: FC<Props> = ({
   };
 
   useEffect(() => {
+    if(dragData.isDirectionUp === undefined) return;
+
     setRotateDegree(rotDegree => {
       let newRotDegree = (rotDegree + (dragData.isDirectionUp ? - SPEED_FACTOR : SPEED_FACTOR));
 

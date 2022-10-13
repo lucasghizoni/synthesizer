@@ -35,6 +35,8 @@ const secondOscInitialState = {
   waveform: 'sine'
 };
 
+const calcDetune = (value: number) => value * 10;
+
 export const OscillatorsProvider: FC<{ children: JSX.Element }> = ({ children}) => {
   const [firstOscillator, setFirstOscillator] = useState<OscillatorState>(firstOscInitialState);
   const [secondOscillator, setSecondOscillator] = useState<OscillatorState>(secondOscInitialState);
@@ -60,7 +62,7 @@ export const OscillatorsProvider: FC<{ children: JSX.Element }> = ({ children}) 
       const oscNode = state.nodes.oscillator;
       if(!oscNode) return state;
 
-      oscNode.detune.value = value * 10;
+      oscNode.detune.value = calcDetune(value);
 
       return {
         ...state,
@@ -86,11 +88,11 @@ export const OscillatorsProvider: FC<{ children: JSX.Element }> = ({ children}) 
 
   const setOscillatorNodes: OscillatorContextState['setOscillatorNodes'] = useCallback((first, second) => {
     first.oscillator.type = firstOscillator.waveform as OscillatorType;
-    first.oscillator.detune.value = firstOscillator.detune * 100;
+    first.oscillator.detune.value = calcDetune(firstOscillator.detune);
     first.gain.gain.value = firstOscillator.volume;
 
     second.oscillator.type = secondOscillator.waveform as OscillatorType;
-    second.oscillator.detune.value = secondOscillator.detune * 100;
+    second.oscillator.detune.value = calcDetune(secondOscillator.detune);
     second.gain.gain.value = secondOscillator.volume;
 
     setFirstOscillator(state => ({

@@ -2,23 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bc1074fd-93d3-4d0f-91be-b15df8cca42f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/context/audio-api.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/hooks/useAudioAPI.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/knob/Knob.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/knob/Knob.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/context/app.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/app.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/context/filter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/filter.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/context/master.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/master.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/context/envelope.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/envelope.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/context/oscillators.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/oscillators.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/context/synth-core.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/keyboard/Keyboard.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/keyboard/Keyboard.module.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/keyboard/Keyboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/keyboard/Keyboard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/keyboard/useInteractedNote.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/keyboard/useInteractedNote.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/low-pass-filter/LowPassFilter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/low-pass-filter/LowPassFilter.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/oscillators/Oscillators.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/oscillators/Oscillators.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hooks/useLowPassFilter.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/useLowPassFilter.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hooks/useSynthCore.ts" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,7 +55,7 @@
       <workItem from="1659001144022" duration="116685000" />
       <workItem from="1659950949083" duration="296635000" />
       <workItem from="1665406541071" duration="12492000" />
-      <workItem from="1665570683446" duration="9004000" />
+      <workItem from="1665570683446" duration="13816000" />
     </task>
     <servers />
   </component>
