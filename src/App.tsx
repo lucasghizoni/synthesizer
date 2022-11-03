@@ -7,6 +7,7 @@ import { Envelope } from "./features/envelope/Envelope";
 import { LowPassFilter } from "./features/low-pass-filter/LowPassFilter";
 import { Master } from "./features/master/Master";
 import { Oscillators } from "./features/oscillators/Oscillators";
+import { Delay } from "./features/delay/Delay";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Oscillators/>
             <Envelope/>
             <LowPassFilter/>
+            <Delay/>
           </Panel>
           <Panel>
             <Keyboard/>

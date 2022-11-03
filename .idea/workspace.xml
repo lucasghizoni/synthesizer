@@ -3,10 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="bc1074fd-93d3-4d0f-91be-b15df8cca42f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/knob/Knob.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/knob/Knob.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/context/envelope.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/envelope.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/context/oscillators.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/oscillators.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/keyboard/Keyboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/keyboard/Keyboard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/context/app.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/app.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/keyboard/keyboard-slice/KeyboardSlice.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/keyboard/keyboard-slice/KeyboardSlice.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/keyboard/keyboard-slice/KeyboardSlice.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/keyboard/keyboard-slice/KeyboardSlice.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hooks/useAudioAPI.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/useAudioAPI.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,7 +56,10 @@
       <workItem from="1659001144022" duration="116685000" />
       <workItem from="1659950949083" duration="296635000" />
       <workItem from="1665406541071" duration="12492000" />
-      <workItem from="1665570683446" duration="13816000" />
+      <workItem from="1665570683446" duration="17501000" />
+      <workItem from="1665773001981" duration="342000" />
+      <workItem from="1666027583649" duration="342000" />
+      <workItem from="1666029481835" duration="3144000" />
     </task>
     <servers />
   </component>
@@ -73,5 +77,16 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/features/keyboard/keyboard-slice/KeyboardSlice.tsx</url>
+          <line>9</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

@@ -7,13 +7,13 @@ type MajorNote = 'C'|'D'|'E'|'F'|'G'|'A'|'B';
 type SharpNote = `${Exclude<MajorNote, 'B' | 'E'>}#`;
 export type Note = MajorNote | SharpNote;
 
-const CSS_LEFT_GAP = 1.33;
+const CSS_LEFT_GAP = 1.56;
 const BLACK_KEYS_LEFT_MULTIPLIER_VAL: { [k in SharpNote]: number } = {
-  'C#': 2,
+  'C#': 1.9,
   'D#': 5,
-  'F#': 11,
-  'G#': 14,
-  'A#': 17,
+  'F#': 11.1,
+  'G#': 14.2,
+  'A#': 17.3,
 } as const;
 
 export interface KeyboardSliceProps {

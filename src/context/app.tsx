@@ -5,6 +5,7 @@ import { OscillatorsProvider } from "./oscillators";
 import { FilterProvider } from "./filter";
 import { AudioAPIProvider } from "./audio-api";
 import { FrequencyProvider } from "./frequency";
+import { DelayProvider } from "./delay";
 
 type FCWithChildren = FC<{ children: JSX.Element }>;
 
@@ -18,6 +19,7 @@ const compose = (providers: FCWithChildren[]) =>
 
 export const AppProvider: FCWithChildren = compose([
   AudioAPIProvider,
+  DelayProvider,
   EnvelopeProvider,
   FrequencyProvider,
   MasterProvider,

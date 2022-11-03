@@ -1,9 +1,10 @@
-import { useCallback, useContext } from "react";
+import { useContext } from "react";
 
 import { AudioAPIContext } from "../context/audio-api";
 import { OscillatorsContext } from "../context/oscillators";
 import { MasterContext } from "../context/master";
 import { FilterContext } from "../context/filter";
+import {DelayContext} from "../context/delay";
 
 const createGainNode = (audioCtx: AudioContext) => audioCtx.createGain();
 
@@ -19,9 +20,10 @@ export const useAudioAPI = () => {
   const { setOscillatorNodes } = useContext(OscillatorsContext);
   const { setMasterNode } = useContext(MasterContext);
   const { setFilterNode } = useContext(FilterContext);
+  const { setDelayNodes } = useContext(DelayContext);
 
   return {
-    getAudioCtx: useCallback(() => {
+    getAudioCtx: () => {
       if(audioCtx) return audioCtx;
 
       const newAudioCtx = new AudioContext();
@@ -45,16 +47,25 @@ export const useAudioAPI = () => {
 
       const filterNode = newAudioCtx.createBiquadFilter();
 
+      const delayNodes = {
+        delay: newAudioCtx.createDelay(),
+        gainNode: createGainNode(newAudioCtx),
+      };
+      delayNodes.delay.connect(delayNodes.gainNode);
+      delayNodes.gainNode.connect(delayNodes.delay);
+
       masterGainNode.connect(filterNode);
+      delayNodes.delay.connect(newAudioCtx.destination);
       filterNode.connect(newAudioCtx.destination);
 
+      setDelayNodes(delayNodes);
       setMasterNode(masterGainNode);
       setOscillatorNodes(firstOscNodes, secondOscNodes);
       setFilterNode(filterNode, newAudioCtx.sampleRate);
       setAudioCtx(newAudioCtx);
 
       return newAudioCtx;
-    }, [audioCtx, setAudioCtx, setFilterNode, setMasterNode, setOscillatorNodes]),
+    },
     ...rest,
   };
 };
