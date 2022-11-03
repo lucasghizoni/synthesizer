@@ -1,9 +1,9 @@
 # <React Synth \/>
 A Web Synthesizer made with React and the [Browser Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API)
 
-<img width="623" alt="Screenshot 2022-11-03 at 19 02 29" src="https://user-images.githubusercontent.com/8701805/199799813-ca714c85-f2fe-4634-91c0-cda5bea9f36a.png">
+[<img width="715" alt="Screenshot 2022-11-03 at 19 22 08" src="https://user-images.githubusercontent.com/8701805/199803614-d2aafd35-8361-4b91-85a9-b5cfcdb6185a.png">](https://lucasghizoni.github.io/synthesizer)
 
-Last deployed version is [here](https://lucasghizoni.github.io/synthesizer/)
+Deployed version is available [here](https://lucasghizoni.github.io/synthesizer/)
 
 ## Available Scripts
 
