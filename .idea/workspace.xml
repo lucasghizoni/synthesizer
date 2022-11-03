@@ -3,10 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="bc1074fd-93d3-4d0f-91be-b15df8cca42f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/knob/Knob.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/knob/Knob.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/context/envelope.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/envelope.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/context/oscillators.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/oscillators.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/keyboard/Keyboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/keyboard/Keyboard.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
