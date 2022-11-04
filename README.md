@@ -1,4 +1,4 @@
-# <React Synth \/>
+# :control_knobs: <ReactSynth\/> :musical_keyboard:
 A Web Synthesizer made with React and the [Browser Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API)
 
 [<img width="715" alt="Screenshot 2022-11-03 at 19 22 08" src="https://user-images.githubusercontent.com/8701805/199803614-d2aafd35-8361-4b91-85a9-b5cfcdb6185a.png">](https://lucasghizoni.github.io/synthesizer)
