@@ -1,11 +1,6 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 
-export interface SvgConfig {
-  markup: ReactNode;
-  width: string;
-  height: string;
-  viewBox: string;
-}
+import { SvgConfig } from "./types";
 
 export const sine: SvgConfig = {
   width: '20',

@@ -32,3 +32,9 @@ h1 {
 .controllersPanel:active {
   cursor: grabbing;
 }
+
+.githubIcon {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+}
